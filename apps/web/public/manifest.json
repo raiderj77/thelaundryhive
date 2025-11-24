@@ -1,0 +1,16 @@
+{
+    "name": "The Laundry Hive",
+    "short_name": "LaundryHive",
+    "description": "The All-In-One OS For Modern Laundromats",
+    "start_url": "/dashboard/kanban",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#f59e0b",
+    "icons": [
+        {
+            "src": "/icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}

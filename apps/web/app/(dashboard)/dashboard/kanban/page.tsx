@@ -1,0 +1,1 @@
+import Board from "@/components/kanban/Board"; export default function Page() { return <Board />; }

@@ -1,0 +1,1 @@
+export default function StoreHome({ params }: { params: { storeSlug: string } }) { return <div>Welcome to {params.storeSlug}</div>; }
