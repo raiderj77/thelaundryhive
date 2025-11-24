@@ -3,18 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.stripeWebhook = void 0;
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const stripe_1 = require("stripe");
-const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY || 'sk_test_mock', {
-    apiVersion: '2023-10-16',
-});
 const db = admin.firestore();
 exports.stripeWebhook = functions.https.onRequest(async (req, res) => {
     var _a, _b;
-    const sig = req.headers['stripe-signature'];
-    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_mock';
     let event;
     try {
         // In a real scenario, we verify the signature
+        // const sig = req.headers['stripe-signature'];
+        // const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_mock';
         // event = stripe.webhooks.constructEvent(req.rawBody, sig as string, endpointSecret);
         event = req.body; // Trusting body for dev/mock
     }

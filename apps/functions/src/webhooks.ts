@@ -2,20 +2,15 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_mock', {
-    apiVersion: '2023-10-16',
-});
-
 const db = admin.firestore();
 
 export const stripeWebhook = functions.https.onRequest(async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_mock';
-
     let event: Stripe.Event;
 
     try {
         // In a real scenario, we verify the signature
+        // const sig = req.headers['stripe-signature'];
+        // const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_mock';
         // event = stripe.webhooks.constructEvent(req.rawBody, sig as string, endpointSecret);
         event = req.body; // Trusting body for dev/mock
     } catch (err: any) {

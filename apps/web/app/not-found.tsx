@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { WashingMachine } from "lucide-react";
+import { Shirt } from "lucide-react";
 
 export default function NotFound() {
     return (
         <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-center p-4">
             <div className="bg-slate-800 p-8 rounded-full mb-8 animate-bounce">
-                <WashingMachine size={64} className="text-hive-primary" />
+                <Shirt size={64} className="text-blue-500" />
             </div>
             <h1 className="text-6xl font-black text-white mb-4">404</h1>
             <h2 className="text-2xl font-bold text-slate-300 mb-8">Lost in the Laundry?</h2>
@@ -14,7 +14,7 @@ export default function NotFound() {
             </p>
             <Link
                 href="/"
-                className="px-8 py-3 bg-hive-primary text-slate-900 font-bold rounded-full hover:brightness-110 transition-all"
+                className="px-8 py-3 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-all"
             >
                 Back to Home
             </Link>

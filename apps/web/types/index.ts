@@ -1,4 +1,4 @@
-export type OrderStatus = 'new' | 'pickup_scheduled' | 'at_lab' | 'washing' | 'folding' | 'out_for_delivery' | 'completed';
+export type OrderStatus = 'new' | 'pickup_scheduled' | 'at_lab' | 'washing' | 'drying' | 'folding' | 'ready' | 'out_for_delivery' | 'completed';
 
 export interface Order {
     id: string;

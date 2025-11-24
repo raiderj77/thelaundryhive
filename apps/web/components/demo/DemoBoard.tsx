@@ -14,10 +14,10 @@ const COLUMNS: { id: OrderStatus; label: string }[] = [
 ];
 
 const DEMO_ORDERS: Order[] = [
-    { id: "1", storeId: "demo", customerName: "Alice Johnson", status: "new", type: "dropoff", totalPrice: 24.50, createdAt: Date.now(), address: "123 Maple St", phoneNumber: "+15550101" },
-    { id: "2", storeId: "demo", customerName: "Bob Smith", status: "washing", type: "pickup", totalPrice: 45.00, createdAt: Date.now() - 100000, address: "456 Oak Ave", phoneNumber: "+15550102", driverName: "Dave" },
-    { id: "3", storeId: "demo", customerName: "Charlie Brown", status: "drying", type: "dropoff", totalPrice: 18.75, createdAt: Date.now() - 200000, address: "789 Pine Ln", phoneNumber: "+15550103" },
-    { id: "4", storeId: "demo", customerName: "Diana Prince", status: "folding", type: "pickup", totalPrice: 62.00, createdAt: Date.now() - 300000, address: "321 Elm St", phoneNumber: "+15550104", driverName: "Sarah" },
+    { id: "1", tenantId: "demo", customerId: "c1", customerName: "Alice Johnson", status: "new", type: "dropoff", totalPrice: 24.50, createdAt: Date.now(), address: { formatted: "123 Maple St" }, phoneNumber: "+15550101" },
+    { id: "2", tenantId: "demo", customerId: "c2", customerName: "Bob Smith", status: "washing", type: "pickup", totalPrice: 45.00, createdAt: Date.now() - 100000, address: { formatted: "456 Oak Ave" }, phoneNumber: "+15550102", driverName: "Dave" },
+    { id: "3", tenantId: "demo", customerId: "c3", customerName: "Charlie Brown", status: "drying", type: "dropoff", totalPrice: 18.75, createdAt: Date.now() - 200000, address: { formatted: "789 Pine Ln" }, phoneNumber: "+15550103" },
+    { id: "4", tenantId: "demo", customerId: "c4", customerName: "Diana Prince", status: "folding", type: "pickup", totalPrice: 62.00, createdAt: Date.now() - 300000, address: { formatted: "321 Elm St" }, phoneNumber: "+15550104", driverName: "Sarah" },
 ];
 
 export default function DemoBoard() {
@@ -30,13 +30,14 @@ export default function DemoBoard() {
         const timer = setTimeout(() => {
             const newOrder: Order = {
                 id: "5",
-                storeId: "demo",
+                tenantId: "demo",
+                customerId: "c5",
                 customerName: "New Customer (Demo)",
                 status: "new",
                 type: "dropoff",
                 totalPrice: 30.00,
                 createdAt: Date.now(),
-                address: "555 Demo Way"
+                address: { formatted: "555 Demo Way" }
             };
             setOrders(prev => [...prev, newOrder]);
             showToast("🔔 New Order Received: New Customer");

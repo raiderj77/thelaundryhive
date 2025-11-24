@@ -4,8 +4,8 @@ import { Order } from "@/types";
 
 // MOCK DATA FALLBACK
 const MOCK_ORDERS: Order[] = [
-    { id: "1", storeId: "1", customerName: "Sarah Connor", status: "washing", type: "pickup", totalPrice: 25.50, createdAt: Date.now(), address: "123 Main", phoneNumber: "+18317894938" },
-    { id: "2", storeId: "1", customerName: "John Wick", status: "ready", type: "dropoff", totalPrice: 45.00, createdAt: Date.now() - 100000, address: "Continental Hotel", phoneNumber: "+15550000002" }
+    { id: "1", tenantId: "1", customerId: "c1", customerName: "Sarah Connor", status: "washing", type: "pickup", totalPrice: 25.50, createdAt: Date.now(), address: { formatted: "123 Main" }, phoneNumber: "+18317894938" },
+    { id: "2", tenantId: "1", customerId: "c2", customerName: "John Wick", status: "ready", type: "dropoff", totalPrice: 45.00, createdAt: Date.now() - 100000, address: { formatted: "Continental Hotel" }, phoneNumber: "+15550000002" }
 ];
 
 export async function fetchActiveOrders(storeId: string): Promise<Order[]> {
