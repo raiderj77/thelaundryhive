@@ -11,9 +11,9 @@ export interface SmsMessage {
 }
 
 export interface EmailProvider {
-    sendEmail(message: EmailMessage): Promise<void>;
+    sendEmail(message: EmailMessage): Promise<any>;
 }
 
 export interface SmsProvider {
-    sendSms(message: SmsMessage): Promise<void>;
+    sendSms(message: SmsMessage): Promise<any>;
 }

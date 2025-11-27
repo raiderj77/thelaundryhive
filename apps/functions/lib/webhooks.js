@@ -44,8 +44,7 @@ exports.stripeWebhook = functions.https.onRequest(async (req, res) => {
                 const orderId = (_a = session.metadata) === null || _a === void 0 ? void 0 : _a.orderId;
                 const tenantId = (_b = session.metadata) === null || _b === void 0 ? void 0 : _b.tenantId;
                 if (orderId && tenantId) {
-                    await db.collection('tenants').doc(tenantId)
-                        .collection('orders').doc(orderId)
+                    await db.collection('orders').doc(orderId)
                         .update({
                         paymentStatus: 'paid',
                         stripeSessionId: session.id

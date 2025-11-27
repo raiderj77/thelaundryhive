@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: 'class', // Disable auto-dark mode based on system preference
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,8 +11,8 @@ const config: Config = {
     extend: {
       colors: {
         hive: {
-          primary: "#18181B", // Zinc 900 (Factory Black)
-          secondary: "#71717A", // Zinc 500
+          primary: "var(--hive-primary)", // Dynamic Brand Color
+          secondary: "#3F3F46", // Zinc 700 (Darker for readability)
           accent: "#2563EB", // Blue 600 (Default Tenant Accent)
           bg: "#FAFAFA", // Zinc 50
         }

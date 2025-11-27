@@ -11,27 +11,52 @@ export const useRealtimeOrders = (storeId: string) => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log("useRealtimeOrders: Starting fetch...");
-        let mounted = true;
+        console.log("useRealtimeOrders: Connecting to Firestore...");
 
-        // FORCE MOCK MODE: Remove complexity for now
-        fetchActiveOrders(storeId)
-            .then(data => {
-                console.log("useRealtimeOrders: Data received", data);
-                if (mounted) {
-                    setOrders(data);
+        // Import dynamically to ensure client-side execution
+        let unsubscribe: () => void;
+
+        const setupListener = async () => {
+            try {
+                const { collection, query, where, onSnapshot, orderBy, limit } = await import("firebase/firestore");
+                const { db } = await import("@/lib/firebase/config");
+
+                // Query: Get orders for this tenant, ordered by creation time
+                // Note: You might need a composite index for tenantId + createdAt. 
+                // If that fails, remove orderBy for now.
+                const q = query(
+                    collection(db, "orders"),
+                    where("tenantId", "==", storeId)
+                    // limit(50)
+                );
+
+                unsubscribe = onSnapshot(q, (snapshot) => {
+                    console.log("useRealtimeOrders: Snapshot received", snapshot.size);
+                    const orderData = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    })) as Order[];
+
+                    setOrders(orderData);
                     setLoading(false);
-                }
-            })
-            .catch(err => {
-                console.error("useRealtimeOrders: Error", err);
-                if (mounted) {
+                }, (err) => {
+                    console.error("useRealtimeOrders: Snapshot Error", err);
                     setError(err.message);
                     setLoading(false);
-                }
-            });
+                });
 
-        return () => { mounted = false; };
+            } catch (err: any) {
+                console.error("useRealtimeOrders: Setup Error", err);
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+
+        setupListener();
+
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
     }, [storeId]);
 
     return { orders, loading, error };

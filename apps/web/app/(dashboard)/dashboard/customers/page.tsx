@@ -22,7 +22,7 @@ export default function CustomersPage() {
         <div className="h-full flex flex-col">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
-                <button className="bg-hive-primary text-hive-dark px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-sm">
+                <button className="bg-hive-primary text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-sm">
                     <UserPlus size={18} /> Add Customer
                 </button>
             </div>

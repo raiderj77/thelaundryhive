@@ -104,7 +104,7 @@ export default function DemoBoard() {
                                 </div>
                             ))}
                             {orders.filter(o => o.status === col.id).length === 0 && (
-                                <div className="text-center p-4 text-slate-400 text-xs italic">No orders</div>
+                                <div className="text-center p-4 text-slate-500 text-xs italic">No orders</div>
                             )}
                         </div>
                     </div>

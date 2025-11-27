@@ -1,5 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
 import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,6 +13,11 @@ const firebaseConfig = {
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
+console.log("[FIREBASE CONFIG] Initializing with Project ID:", firebaseConfig.projectId);
+console.log("[FIREBASE CONFIG] API Key present:", !!firebaseConfig.apiKey);
+
 export const db = initializeFirestore(app, {
     localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
 });
+
+export const auth = getAuth(app);

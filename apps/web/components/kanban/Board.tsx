@@ -5,11 +5,11 @@ import { OrderCard } from "./OrderCard";
 import { useRealtimeOrders } from "@/hooks/use-realtime-orders";
 
 const COLUMNS: { id: OrderStatus; label: string }[] = [
-  { id: "new", label: "New" },
-  { id: "washing", label: "Washing" },
-  { id: "drying", label: "Drying" },
-  { id: "folding", label: "Folding" },
-  { id: "ready", label: "Ready" }
+  { id: 'placed', label: "New" },
+  { id: 'processing', label: "Processing" },
+  { id: 'ready_for_delivery', label: "Ready" },
+  { id: 'en_route_delivery', label: "Out for Delivery" },
+  { id: 'delivered', label: "Completed" }
 ];
 
 export default function KanbanBoard() {
@@ -24,6 +24,7 @@ export default function KanbanBoard() {
     let movedOrder: any = null;
     let newStatus: string = "";
 
+    // 1. Optimistic UI Update
     setLocalOrders(prev => prev.map(order => {
       if (order.id !== orderId) return order;
 
@@ -39,7 +40,24 @@ export default function KanbanBoard() {
       return movedOrder;
     }));
 
-    // Trigger SMS if moved to "Ready"
+    // 2. Persist to Firestore
+    if (movedOrder && newStatus) {
+      try {
+        const { doc, updateDoc } = await import("firebase/firestore");
+        const { db } = await import("@/lib/firebase/config");
+
+        await updateDoc(doc(db, "orders", orderId), {
+          status: newStatus
+        });
+        console.log("Order status updated in Firestore");
+      } catch (err) {
+        console.error("Failed to update Firestore:", err);
+        alert("Failed to save status change. Please refresh.");
+        // Revert local state if needed (omitted for brevity)
+      }
+    }
+
+    // 3. Trigger SMS if moved to "Ready"
     if (newStatus === "ready" && movedOrder?.phoneNumber) {
       console.log("Triggering SMS for order:", movedOrder.id);
       try {

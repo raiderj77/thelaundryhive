@@ -1,7 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root { --brand-primary: #f59e0b; --brand-secondary: #0f172a; }
-body { @apply bg-slate-50 text-slate-900; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+:root {
+    --brand-primary: #f59e0b;
+    --brand-secondary: #0f172a;
+    --hive-primary: #18181B;
+    /* Default Factory Black */
+}
+
+body {
+    @apply bg-white text-slate-900;
+    background-color: #ffffff;
+    color: #0f172a;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

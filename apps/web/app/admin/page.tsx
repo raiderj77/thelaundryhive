@@ -1,7 +1,11 @@
+"use client";
 import React from "react";
 import { TrendingUp, Users, ShoppingBag, Activity } from "lucide-react";
+import { useAdminStats } from "@/hooks/use-admin-stats";
 
 export default function AdminDashboard() {
+    const { stats, loading } = useAdminStats();
+
     return (
         <div className="space-y-8">
             <div>
@@ -13,25 +17,25 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <StatCard
                     title="Total Revenue"
-                    value="$124,592"
-                    change="+12.5%"
+                    value={loading ? "..." : `$${stats.revenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                    change="+12.5%" // In a real app, calculate vs last month
                     icon={<TrendingUp size={24} className="text-green-400" />}
                 />
                 <StatCard
                     title="Active Tenants"
-                    value="42"
-                    change="+3 this week"
+                    value={loading ? "..." : stats.tenants.toString()}
+                    change="Live"
                     icon={<Users size={24} className="text-blue-400" />}
                 />
                 <StatCard
                     title="Total Orders"
-                    value="1,205"
-                    change="+8.2%"
+                    value={loading ? "..." : stats.orders.toString()}
+                    change="All time"
                     icon={<ShoppingBag size={24} className="text-purple-400" />}
                 />
                 <StatCard
                     title="System Health"
-                    value="99.99%"
+                    value="100%"
                     change="Stable"
                     icon={<Activity size={24} className="text-emerald-400" />}
                 />
@@ -48,17 +52,8 @@ export default function AdminDashboard() {
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
                     <h3 className="text-lg font-bold mb-4">New Tenants</h3>
                     <div className="space-y-4">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-xs font-bold">
-                                    L{i}
-                                </div>
-                                <div>
-                                    <div className="font-medium text-sm">Laundromat #{i}</div>
-                                    <div className="text-xs text-white/40">Joined 2h ago</div>
-                                </div>
-                            </div>
-                        ))}
+                        {/* Placeholder for recent tenants list */}
+                        <div className="text-white/40 text-sm italic">No recent signups</div>
                     </div>
                 </div>
             </div>

@@ -44,7 +44,7 @@ export default function CheckoutButton({ amount, orderId, customerEmail }: Check
         <button
             onClick={handleCheckout}
             disabled={loading}
-            className="flex items-center gap-2 bg-hive-primary text-hive-dark px-6 py-3 rounded-lg font-bold hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
+            className="flex items-center gap-2 bg-hive-primary text-white px-6 py-3 rounded-lg font-bold hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
         >
             <CreditCard size={20} />
             {loading ? "Processing..." : `Pay $${amount.toFixed(2)}`}

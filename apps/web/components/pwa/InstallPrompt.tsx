@@ -38,7 +38,7 @@ export default function InstallPrompt() {
                 <div className="bg-hive-primary p-2 rounded-lg text-slate-900"><Download size={20} /></div>
                 <div>
                     <div className="font-bold text-sm">Install App</div>
-                    <div className="text-xs text-slate-400">Add to Home Screen</div>
+                    <div className="text-xs text-slate-600">Add to Home Screen</div>
                 </div>
             </div>
             <div className="flex gap-2">

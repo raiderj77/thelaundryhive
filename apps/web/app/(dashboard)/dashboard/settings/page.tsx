@@ -1,8 +1,13 @@
 "use client";
-import React, { useState } from "react";
-import { Save, Store, Bell, DollarSign, CreditCard, CheckCircle } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Save, Store, Bell, DollarSign, CreditCard, CheckCircle, Palette } from "lucide-react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
+
+import { useAuth } from "@/context/AuthContext";
 
 export default function SettingsPage() {
+    const { tenantId } = useAuth();
     const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState({
         storeName: "The Laundry Hive",
@@ -11,16 +16,41 @@ export default function SettingsPage() {
         pricePerLb: "1.50",
         enableSms: true,
         enableEmail: true,
-        stripeConnected: false
+        stripeConnected: false,
+        brandColor: "#18181B", // Default hive-primary
+        logoUrl: ""
     });
 
-    const handleSave = (e: React.FormEvent) => {
+    // Load settings from Firestore on mount
+    useEffect(() => {
+        if (!tenantId) return;
+        const loadSettings = async () => {
+            try {
+                const docRef = doc(db, "tenants", tenantId);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setSettings(prev => ({ ...prev, ...docSnap.data() }));
+                }
+            } catch (err) {
+                console.error("Failed to load settings:", err);
+            }
+        };
+        loadSettings();
+    }, [tenantId]);
+
+    const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!tenantId) return;
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
+        try {
+            await setDoc(doc(db, "tenants", tenantId), settings, { merge: true });
             alert("Settings Saved Successfully!");
-        }, 800);
+        } catch (err) {
+            console.error("Error saving settings:", err);
+            alert("Failed to save settings.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -66,6 +96,46 @@ export default function SettingsPage() {
                     </div>
                 </div>
 
+                {/* Branding / White Label Section */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="bg-slate-50 p-4 border-b border-slate-200 flex items-center gap-2 font-bold text-slate-700">
+                        <Palette size={18} /> Branding & White Label
+                    </div>
+                    <div className="p-6 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">Brand Color</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="color"
+                                        className="h-10 w-10 rounded cursor-pointer border border-slate-200"
+                                        value={settings.brandColor}
+                                        onChange={e => setSettings({ ...settings, brandColor: e.target.value })}
+                                    />
+                                    <input
+                                        type="text"
+                                        className="flex-1 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-hive-primary focus:border-transparent outline-none uppercase"
+                                        value={settings.brandColor}
+                                        onChange={e => setSettings({ ...settings, brandColor: e.target.value })}
+                                    />
+                                </div>
+                                <p className="text-xs text-slate-500 mt-1">Primary color for buttons and highlights.</p>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">Logo URL</label>
+                                <input
+                                    type="text"
+                                    placeholder="https://example.com/logo.png"
+                                    className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-hive-primary focus:border-transparent outline-none"
+                                    value={settings.logoUrl}
+                                    onChange={e => setSettings({ ...settings, logoUrl: e.target.value })}
+                                />
+                                <p className="text-xs text-slate-500 mt-1">Direct link to your transparent PNG logo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Pricing Section */}
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                     <div className="bg-slate-50 p-4 border-b border-slate-200 flex items-center gap-2 font-bold text-slate-700">
@@ -104,19 +174,22 @@ export default function SettingsPage() {
                             ) : (
                                 <button
                                     type="button"
-                                    onClick={() => {
-                                        // Simulate Stripe OAuth
-                                        const width = 600, height = 700;
-                                        const left = (window.innerWidth - width) / 2;
-                                        const top = (window.innerHeight - height) / 2;
-                                        const popup = window.open('', 'Stripe Connect', `width=${width},height=${height},top=${top},left=${left}`);
-                                        if (popup) {
-                                            popup.document.write('<h1>Connecting to Stripe...</h1><p>Please wait...</p>');
-                                            setTimeout(() => {
-                                                popup.close();
-                                                setSettings({ ...settings, stripeConnected: true });
-                                                alert("Stripe Connected Successfully!");
-                                            }, 2000);
+                                    onClick={async () => {
+                                        try {
+                                            const res = await fetch('/api/stripe/connect', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({ tenantId: '1' }) // Hardcoded for MVP
+                                            });
+                                            const data = await res.json();
+                                            if (data.url) {
+                                                window.location.href = data.url;
+                                            } else {
+                                                alert('Failed to initiate Stripe Connect');
+                                            }
+                                        } catch (err) {
+                                            console.error(err);
+                                            alert('Error connecting to Stripe');
                                         }
                                     }}
                                     className="bg-[#635BFF] hover:bg-[#5851E1] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors"
@@ -161,7 +234,7 @@ export default function SettingsPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="bg-hive-primary text-hive-dark px-8 py-3 rounded-lg font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-hive-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-hive-primary text-white px-8 py-3 rounded-lg font-bold flex items-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-hive-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {loading ? "Saving..." : <><Save size={18} /> Save Settings</>}
                     </button>

@@ -10,13 +10,21 @@ export const metadata: Metadata = {
 import InstallPrompt from "@/components/pwa/InstallPrompt";
 import CookieBanner from "@/components/legal/CookieBanner";
 
+import { StoreProvider } from "@/lib/store-context";
+
+import { AuthProvider } from "@/context/AuthContext";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        {children}
-        <InstallPrompt />
-        <CookieBanner />
+        <AuthProvider>
+          <StoreProvider>
+            {children}
+            <InstallPrompt />
+            <CookieBanner />
+          </StoreProvider>
+        </AuthProvider>
       </body>
     </html>
   );
