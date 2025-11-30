@@ -14,13 +14,15 @@ import {
     type Auth
 } from "firebase/auth";
 
+// HARDCODED Firebase config to bypass environment variable loading issues
+// TODO: Move back to environment variables once authentication is working
 const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+    apiKey: "AIzaSyDECDcHjdpEAuO-JYLj90jlv3NoTicaQg4",
+    authDomain: "the-laundry-hive.firebaseapp.com",
+    projectId: "the-laundry-hive",
+    storageBucket: "the-laundry-hive.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",  // Get from Firebase Console → Project Settings
+    appId: "YOUR_APP_ID"  // Get from Firebase Console → Project Settings
 };
 
 // Lazy initialization for build-time safety
