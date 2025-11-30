@@ -1,14 +1,14 @@
 import { Order } from "@/types";
-// import { db } from "@/lib/firebase/config"; 
+// import { db } from "@/lib/firebase/config";
 // import { collection, query, limit, getDocs, Timestamp } from "firebase/firestore";
 
-// MOCK DATA FALLBACK
-const MOCK_ORDERS: Order[] = [
-    { id: "1", tenantId: "1", customerId: "c1", customerName: "Sarah Connor", status: "washing", type: "pickup", totalPrice: 25.50, createdAt: Date.now(), address: { formatted: "123 Main" }, phoneNumber: "+18317894938" },
-    { id: "2", tenantId: "1", customerId: "c2", customerName: "John Wick", status: "ready", type: "dropoff", totalPrice: 45.00, createdAt: Date.now() - 100000, address: { formatted: "Continental Hotel" }, phoneNumber: "+15550000002" }
+// MOCK DATA FALLBACK - Using schema-compliant status values
+const MOCK_ORDERS: Partial<Order>[] = [
+    { id: "1", tenantId: "1", customerId: "c1", customerName: "Sarah Connor", status: "processing", total: 25.50, customerPhone: "+18317894938" },
+    { id: "2", tenantId: "1", customerId: "c2", customerName: "John Wick", status: "ready_for_delivery", total: 45.00, customerPhone: "+15550000002" }
 ];
 
-export async function fetchActiveOrders(storeId: string): Promise<Order[]> {
+export async function fetchActiveOrders(storeId: string): Promise<Partial<Order>[]> {
     // SAFEGUARD: If we are in DEMO mode (no real DB), return mock data
     // In a real app, you might check an env var like process.env.NEXT_PUBLIC_USE_REAL_DB
     if (true) { // Force mock for now to avoid errors since we have no real credentials

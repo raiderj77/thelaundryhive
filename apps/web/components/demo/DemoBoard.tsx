@@ -1,11 +1,24 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Order, OrderStatus } from "@/types";
 import { OrderCard } from "@/components/kanban/OrderCard";
 import { useHaptic } from "@/hooks/use-haptic";
 import { Bell } from "lucide-react";
 
-const COLUMNS: { id: OrderStatus; label: string }[] = [
+// Demo-specific types (simplified for demo purposes)
+type DemoOrderStatus = "new" | "washing" | "drying" | "folding" | "ready";
+
+interface DemoOrder {
+    id: string;
+    tenantId: string;
+    customerId: string;
+    customerName: string;
+    customerPhone?: string;
+    status: DemoOrderStatus;
+    total: number;
+    driverName?: string;
+}
+
+const COLUMNS: { id: DemoOrderStatus; label: string }[] = [
     { id: "new", label: "New" },
     { id: "washing", label: "Washing" },
     { id: "drying", label: "Drying" },
@@ -13,38 +26,35 @@ const COLUMNS: { id: OrderStatus; label: string }[] = [
     { id: "ready", label: "Ready" }
 ];
 
-const DEMO_ORDERS: Order[] = [
-    { id: "1", tenantId: "demo", customerId: "c1", customerName: "Alice Johnson", status: "new", type: "dropoff", totalPrice: 24.50, createdAt: Date.now(), address: { formatted: "123 Maple St" }, phoneNumber: "+15550101" },
-    { id: "2", tenantId: "demo", customerId: "c2", customerName: "Bob Smith", status: "washing", type: "pickup", totalPrice: 45.00, createdAt: Date.now() - 100000, address: { formatted: "456 Oak Ave" }, phoneNumber: "+15550102", driverName: "Dave" },
-    { id: "3", tenantId: "demo", customerId: "c3", customerName: "Charlie Brown", status: "drying", type: "dropoff", totalPrice: 18.75, createdAt: Date.now() - 200000, address: { formatted: "789 Pine Ln" }, phoneNumber: "+15550103" },
-    { id: "4", tenantId: "demo", customerId: "c4", customerName: "Diana Prince", status: "folding", type: "pickup", totalPrice: 62.00, createdAt: Date.now() - 300000, address: { formatted: "321 Elm St" }, phoneNumber: "+15550104", driverName: "Sarah" },
+const DEMO_ORDERS: DemoOrder[] = [
+    { id: "1", tenantId: "demo", customerId: "c1", customerName: "Alice Johnson", status: "new", total: 24.50, customerPhone: "+15550101" },
+    { id: "2", tenantId: "demo", customerId: "c2", customerName: "Bob Smith", status: "washing", total: 45.00, customerPhone: "+15550102", driverName: "Dave" },
+    { id: "3", tenantId: "demo", customerId: "c3", customerName: "Charlie Brown", status: "drying", total: 18.75, customerPhone: "+15550103" },
+    { id: "4", tenantId: "demo", customerId: "c4", customerName: "Diana Prince", status: "folding", total: 62.00, customerPhone: "+15550104", driverName: "Sarah" },
 ];
 
 export default function DemoBoard() {
-    const [orders, setOrders] = useState<Order[]>(DEMO_ORDERS);
+    const [orders, setOrders] = useState<DemoOrder[]>(DEMO_ORDERS);
     const [toast, setToast] = useState<string | null>(null);
     const { success, light } = useHaptic();
 
     // Simulate incoming order
     useEffect(() => {
         const timer = setTimeout(() => {
-            const newOrder: Order = {
+            const newOrder: DemoOrder = {
                 id: "5",
                 tenantId: "demo",
                 customerId: "c5",
                 customerName: "New Customer (Demo)",
                 status: "new",
-                type: "dropoff",
-                totalPrice: 30.00,
-                createdAt: Date.now(),
-                address: { formatted: "555 Demo Way" }
+                total: 30.00,
             };
             setOrders(prev => [...prev, newOrder]);
-            showToast("🔔 New Order Received: New Customer");
+            showToast("New Order Received: New Customer");
             success();
         }, 5000);
         return () => clearTimeout(timer);
-    }, []);
+    }, [success]);
 
     const showToast = (msg: string) => {
         setToast(msg);
@@ -53,7 +63,7 @@ export default function DemoBoard() {
 
     const handleMove = (orderId: string, direction: 'next' | 'prev') => {
         light();
-        const statusFlow: OrderStatus[] = ["new", "washing", "drying", "folding", "ready"];
+        const statusFlow: DemoOrderStatus[] = ["new", "washing", "drying", "folding", "ready"];
 
         setOrders(prev => prev.map(o => {
             if (o.id !== orderId) return o;
@@ -69,10 +79,10 @@ export default function DemoBoard() {
 
             if (o.status !== nextStatus) {
                 if (nextStatus === "ready") {
-                    showToast("✅ Order Ready! SMS sent to customer.");
+                    showToast("Order Ready! SMS sent to customer.");
                     success();
                 } else {
-                    showToast(`🔄 Moved to ${nextStatus.charAt(0).toUpperCase() + nextStatus.slice(1)}`);
+                    showToast(`Moved to ${nextStatus.charAt(0).toUpperCase() + nextStatus.slice(1)}`);
                 }
             }
 
@@ -100,7 +110,7 @@ export default function DemoBoard() {
                         <div className="p-2 flex-1 overflow-y-auto">
                             {orders.filter(o => o.status === col.id).map(o => (
                                 <div key={o.id} className="hover:scale-[1.02] transition-transform">
-                                    <OrderCard order={o} onMove={handleMove} />
+                                    <OrderCard order={o as any} onMove={handleMove} />
                                 </div>
                             ))}
                             {orders.filter(o => o.status === col.id).length === 0 && (

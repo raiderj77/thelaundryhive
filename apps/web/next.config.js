@@ -16,7 +16,22 @@ const nextConfig = {
             },
         ];
     },
-    transpilePackages: ['undici', 'firebase', '@stripe/stripe-js'],
+    transpilePackages: ['firebase', '@firebase/auth', '@stripe/stripe-js'],
+    webpack: (config, { isServer }) => {
+        // Fix for undici private class fields issue
+        if (!isServer) {
+            config.resolve.fallback = {
+                ...config.resolve.fallback,
+                fs: false,
+                net: false,
+                tls: false,
+            };
+        }
+        return config;
+    },
+    experimental: {
+        serverComponentsExternalPackages: ['undici'],
+    },
 };
 
 const withPWA = require("next-pwa")({

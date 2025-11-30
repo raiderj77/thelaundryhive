@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase/config";
+import { auth, signInWithEmailAndPassword } from "@/lib/firebase/config";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
