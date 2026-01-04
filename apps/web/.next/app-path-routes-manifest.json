@@ -1,0 +1,14 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/page": "/admin",
+  "/dashboard/billing/page": "/dashboard/billing",
+  "/dashboard/drivers/dispatch/page": "/dashboard/drivers/dispatch",
+  "/dashboard/drivers/page": "/dashboard/drivers",
+  "/dashboard/optimization/page": "/dashboard/optimization",
+  "/dashboard/orders/page": "/dashboard/orders",
+  "/dashboard/page": "/dashboard",
+  "/login/page": "/login",
+  "/sign-up/page": "/sign-up",
+  "/track/page": "/track"
+}

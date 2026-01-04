@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"YEfUCfOkFuS0nmv43Cx2r","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"bg-white p-8 rounded-xl shadow-sm border","children":[["$","h2",null,{"className":"text-xl font-bold mb-6","children":"📍 AI Route Optimization"}],["$","div",null,{"className":"p-6 bg-blue-50 border border-blue-100 rounded-lg mb-8","children":["$","p",null,{"className":"text-blue-800 font-medium","children":"Note: Route optimization requires a \"Pro Partner\" subscription."}]}],["$","div",null,{"className":"text-center py-20 bg-gray-50 rounded-lg border-2 border-dashed","children":["$","p",null,{"className":"text-gray-400","children":"Add orders to generate the most efficient delivery routes."}]}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

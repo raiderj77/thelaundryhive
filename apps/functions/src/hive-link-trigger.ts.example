@@ -1,0 +1,40 @@
+/**
+ * Conceptual Firebase Cloud Function for "Hive-Link" Automation
+ * This trigger would live in 'apps/functions/src/index.ts'
+ */
+
+/*
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
+import { Twilio } from "twilio";
+
+const twilioClient = new Twilio(
+  functions.config().twilio.sid, 
+  functions.config().twilio.token
+);
+
+export const onOrderUpdateNotify = functions.firestore
+  .document("orders/{orderId}")
+  .onUpdate(async (change, context) => {
+    const newData = change.after.data();
+    const previousData = change.before.data();
+
+    // Trigger ONLY when status changes to 'out-for-delivery'
+    if (newData.status === 'out-for-delivery' && previousData.status !== 'out-for-delivery') {
+      const customerPhone = newData.customerPhone;
+      const orderId = context.params.orderId;
+      const trackingUrl = `https://app.thelaundryhive.com/track/${orderId}`;
+
+      try {
+        await twilioClient.messages.create({
+          body: `Buzz buzz! Your Hive Partner is on the way. Track your laundry live: ${trackingUrl}`,
+          to: customerPhone,
+          from: functions.config().twilio.number,
+        });
+        console.log(`Notification sent for order ${orderId}`);
+      } catch (error) {
+        console.error("Twilio notification failed:", error);
+      }
+    }
+  });
+*/

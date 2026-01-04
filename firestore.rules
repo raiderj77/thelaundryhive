@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper: Is the user logged in?
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper: Does the user own this business?
+    function isBusinessOwner(bizId) {
+      return isSignedIn() && request.auth.uid == bizId;
+    }
+
+    // Orders: Owners can CRUD their own; Customers can READ their specific order
+    match /orders/{orderId} {
+      // Public tracking access (protected by unique ID)
+      allow read: if true; 
+      // Only owners of the business associated with the order can write
+      allow write: if isBusinessOwner(resource.data.businessId) || isBusinessOwner(request.resource.data.businessId);
+    }
+
+    // Business/Tenant Profiles: Only the owner can manage their settings
+    // Includes 'tenants' to align with the sign-up implementation
+    match /tenants/{bizId} {
+      allow read: if true; 
+      allow write: if isBusinessOwner(bizId);
+    }
+
+    match /businesses/{bizId} {
+      allow read: if true; 
+      allow write: if isBusinessOwner(bizId);
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow write: if isSignedIn() && request.auth.uid == userId;
+    }
+  }
+}
