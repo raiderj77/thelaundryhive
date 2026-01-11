@@ -22,4 +22,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_THE_LAUNDRY_HIVE }}
           channelId: live
           projectId: the-laundry-hive
-          target: marketing
+         

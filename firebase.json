@@ -1,7 +1,8 @@
 {
   "hosting": [
     {
-      "target": "marketing",
+      "site": "the-laundry-hive",
+
       "public": "apps/marketing/out",
       "ignore": [
         "firebase.json",
