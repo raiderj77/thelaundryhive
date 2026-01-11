@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "the-laundry-hive"
+  },
+  "targets": {
+    "the-laundry-hive": {
+      "hosting": {
+        "marketing": [
+          "thelaundryhive-marketing"
+        ],
+        "app": [
+          "thelaundryhive-app"
+        ]
+      }
+    }
   }
 }
